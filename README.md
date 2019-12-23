@@ -1,5 +1,4 @@
 # Ansible
-Ansible
 
 Código fornecido no treinamento da Iaas Week da LinuxTips para instalação do k8s no Ubuntu, foi realizado alguns ajustes para rodar no centos7.
 
@@ -16,5 +15,3 @@ Editar o arquivo hosts e adicionar os IP's dos workers na tag [k8s-workers] de a
 192.168.0.20  
 192.168.0.21
 ```
-
-
