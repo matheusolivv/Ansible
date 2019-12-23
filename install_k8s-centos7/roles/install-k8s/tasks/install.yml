@@ -1,0 +1,53 @@
+- name: Instalando dependencias no Centos
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Instalando o Docker
+  shell: curl -fsSL https://get.docker.com | bash -
+
+- name: Habilitando o servico do Docker
+  systemd:
+    name: docker
+    enabled: yes
+    masked: no
+
+- name: Verificando se o servico docker esta em execucao
+  systemd:
+    state: started
+    name: docker
+
+- name: Desabilitando o swap
+  shell : "swapoff -a"
+
+- name: Adicionando as chaves repo k8s no yum
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    gpgcheck: yes
+
+- name: Instalando os pacotes do k8s utilizando o Yum
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: Habilitando o servico do kubelet no systemd
+  systemd:
+    name: kubelet
+    enabled: yes
+    masked: no
+
+- name: Verificando se o servico kubelet esta em execucao
+  systemd:
+    state: started
+    name: kubelet
